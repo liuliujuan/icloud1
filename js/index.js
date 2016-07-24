@@ -1,0 +1,180 @@
+var todo=[{
+	id:1,
+	title:'新列表',
+	color:'#C96FE1',
+	list:[
+	  {
+		time:'2016年',
+		content:'123456897',
+		done:true
+	  }
+	]
+
+},{
+	id:2,
+	title:'新列表2',
+	color:'#6CDB30',
+	list:[
+	  {
+		time:'2016年',
+		content:'456789',
+		done:false
+	  }
+	]
+
+},{
+	id:3,
+	title:'新列表3',
+	color:'#3FABF8',
+	
+	list:[
+	  {
+		time:'2016年',
+		content:'987456321',
+		done:true
+	  }
+	]
+
+}
+]
+var app=angular.module('app',[]);
+app.controller('icloud',function($scope){
+    $scope.color=['#C96FE1','#6CDB30','#3FABF8','#F3CB00','#9F845D',
+    '#F62369','#F89600'];
+    $scope.todo=todo;
+    $scope.ids=0;
+    $scope.index=0;
+    getNum1();
+    getNum2();
+    function getNum1(){
+     	$scope.num1=0;
+        angular.forEach($scope.todo[$scope.index].list,function(obj,i){
+    	if(obj.done==true){
+    		$scope.num1++;
+    	}
+      });
+    }
+    function getNum2(){
+     	$scope.num2=0;
+        angular.forEach($scope.todo[$scope.index].list,function(obj,i){
+    	if(obj.done==false){
+    		$scope.num2++;
+    	}
+      });
+    }
+    $scope.num2=0;
+    $scope.flag=false;
+    $scope.done=function(v,i,arr){
+    	return v.done==true;
+    }
+    $scope.doing=function(v,i,arr){
+    	return v.done==false;
+    }
+
+    $scope.add=function(){
+    	$scope.ids=$scope.todo[$scope.todo.length-1].id+1;
+        $scope.flag2=false;
+    	var o={};
+    	o.id=$scope.ids;
+    	o.title='新列表'+$scope.ids;
+    	o.color=$scope.color[($scope.todo.length+1)%7];
+    	o.list=[
+    	{
+		time:'2016年',
+		content:'123456897',
+		done:true
+	   },
+	   {
+		time:'2016年1月',
+		content:'897654321',
+		done:false
+	   },
+	   {
+		time:'2015年',
+		content:'456123',
+		done:true
+	   },
+	   {
+		time:'2016年1月',
+		content:'4444444',
+		done:true
+	   }
+    	];
+    	$scope.todo.push(o);
+    	$scope.index=$scope.todo.length-1;
+    }
+    $scope.ss='';
+    $scope.flag1=false;
+   /*
+    $scope.$watch("flag1",function(newVal,oldVal){
+    	 if($scope.ss!=''){
+    	   $scope.flag1=true;
+	    }else{
+	    	$scope.flag1=false;
+	    }
+    })*/
+    $scope.chang=function(i){
+    	$scope.index=i;
+    	$scope.flag=false;
+    	getNum1();
+    	getNum2();
+    }
+    $scope.addlist=function(){
+    	var l={};
+    	l.time=new Date().getTime();
+    	l.content='';
+    	l.done=false;
+    	$scope.todo[$scope.index].list.push(l);
+    }
+    $scope.qihuan=function(obj,status){
+    	obj.done=status;
+    }
+    $scope.$watch('todo',function(){
+    	getNum1();
+    	getNum2();
+    },true);
+    $scope.flag2=false;
+    $scope.getColor=function(){
+    	$scope.flag2=!$scope.flag2;
+    	$scope.fontColor=$scope.todo[$scope.index].color;
+    	$scope.titles=$scope.todo[$scope.index].title;
+    }
+    $scope.borderColor=function(v){
+        $scope.fontColor=v;
+    }
+    $scope.finish=function(){
+        $scope.todo[$scope.index].title=$scope.titles;
+        $scope.todo[$scope.index].color=$scope.fontColor;
+        $scope.flag2=false;
+    }
+    $scope.quxiao=function(){
+        $scope.flag2=false;
+    }
+    $scope.del=function(){
+        $scope.todo.splice($scope.index,1);
+        $scope.flag2=false;
+    }
+    /*$scope.souvalue='搜索所有提醒';*/
+    $scope.souguan=function(){
+        $scope.flag1=false;
+        $scope.souvalue='';
+        console.log($scope.souvalue)
+    }
+    $scope.delfinish=function(){
+        var arr=[];
+         angular.forEach($scope.todo[$scope.index].list,function(obj,i){
+          if(obj.done==true){
+             $scope.todo[$scope.index].list.splice(i,1);
+           }
+       })
+        /* for(var i=0;i<arr.length;i++){
+            console.log(arr[i]);
+            $scope.todo[$scope.index].list.splice(arr[i],1);
+            $scope.todo[$scope.index].list
+         }*/
+   }
+   /* $scope.guanbi=function(){
+    	$scope.flag1=false;
+    	alert(1)
+    }*/
+})

@@ -1,0 +1,124 @@
+<!doctype html>
+<html ng-app='app'>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/index.css">
+	<script src='js/angular.min.js'></script>
+	<script src='js/index.js'></script>
+</head>
+<body ng-controller='icloud'>
+	<div class="container">
+		<div class='left'>
+			<div class='title'>
+				<a href="" class='logo'>iCloud</a>
+				<div class="add" ng-click='add()'>
+					<span></span>
+					<span></span>
+				</div>
+			</div>
+			<ul class='list'>
+				<li ng-repeat='v in todo'  ng-click='chang($index)'>
+					<span ng-style='{background:v.color}'></span>
+					<h3>{{v.title}}</h3>
+				</li>
+			</ul>
+		</div>
+		<div class='right'>
+			<div class="search">
+				<div class="sou" ng-style='{"background-color":flag1==true?"#fff":"none"}'>
+					<span class='sou-bg'></span>
+					<div class='sousuo' >
+						<input type="text" ng-model='ss' ng-focus='flag1=true' value='{{souvalue}}'  placeholder='搜索所有提醒'>
+						<div class='guanbi' ng-show='flag1' ng-click='souguan()'>
+						</div>
+					</div>
+				</div>
+				<div class='user'></div>
+			</div>
+			<div class="content">
+				<ul ng-show="flag1">
+						<li ng-repeat='v in todo | filter:ss'>
+							<h3 class='lie' ng-style='{color:v.color}' a1='{{souCol=v.color}}' v1='{{valist=v.list}}'>{{v.title}}</h3>
+							<div class="sy" ng-repeat='v in valist|filter:done|filter:ss'>
+								<div class='yuan' ng-style='{backgroundColor:souCol,borderColor:souCol
+							}'>
+								</div>
+								<input class='shi' ng-model='v.content'></input>
+							</div>
+							<div class="sy1" ng-repeat='v in todo[$index].list|filter:doing|filter:ss'>
+								<div class='yuan' ng-style='{borderColor:souCol
+							}' style=''>
+								</div>
+								<input class='shi' ng-model='v.content'></input>
+							</div>
+						</li>
+				</ul>
+				<div ng-show='!flag1'>
+				<div class='conTitle' >
+					<h2 ng-style='{color:todo[index].color}'>{{todo[index].title}}</h2>
+					<a href="javascipt:;" ng-style='{color:todo[index].color}' ng-click='getColor()'>
+						选项
+					</a>
+					<div class='xuanColor' ng-show='flag2'>
+							<div class='xuanInner'>
+								<div class='xuanIp'><input type="text"ng-model='titles' 
+									ng-style='{"color":fontColor}'></div>
+								<h3 id='xuaninfo'>
+									列表颜色
+								</h3>
+								<ul class='xuanyuan'>
+									<li ng-repeat='v in color' ng-style='{"background-color":v,"border-color":v==fontColor?v:"transparent"}'  ng-click='borderColor(v)'></li>
+								</ul>
+								<div class='btn'>
+									<span class='btnDel' ng-click='del()'>删除</span>
+									<div class='btnL'>
+										<span class='quxiao' ng-click='quxiao()'>取消</span>
+										<span>|</span>
+										<strong ng-click="finish()">完成</strong>
+									</div>
+								</div>
+							</div>
+					</div>
+					
+				</div>
+				<div class="done">
+					<h3 class='yi' ng-click='flag=!flag'><span  ng-class="{true:'daosanjiao',false:'sanjiao'}[flag]"></span>已完成：<strong>{{num1}}</strong>项
+					 <a href="javascipt:;" ng-style='{color:todo[index].color}' ng-show='flag' ng-click='delfinish()'>清除已完成选项</a>
+					</h3>
+					<ul class='infor' ng-show='flag'>
+						<li ng-repeat='v in todo[index].list | filter:done' >
+							<h3 class='time'>{{v.time|date:'yyyy-MM-dd'}}</h3>
+							<div class="xiang">
+								<div class='yuan' ng-style='{backgroundColor:todo[index].color,borderColor:todo[index].color
+							}' ng-click="qihuan(v,false)">
+								</div>
+								<input class='shi' ng-model='v.content'></input>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="doing">
+					<h3 class='yi'><span class="sanjiao"></span>未完成：<strong>{{num2}}</strong>项</h3>
+					<ul class='infor'>
+						<li ng-repeat='v in todo[index].list | filter:doing'>
+							<div class="xiang">
+								<div class='kongyuan' ng-style='{borderColor:todo[index].color}'
+								ng-click="qihuan(v,true)">
+									
+								</div>
+								<input class='shi' ng-model='v.content'></input>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="newpro" ng-click='addlist()'>
+					新项目...
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
